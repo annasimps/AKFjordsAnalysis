@@ -1,0 +1,1891 @@
+%%% Average temperature and salinity by season and plot these into figures
+%%% for paper 
+
+%%% Anna Simpson
+%%% September 13, 2022
+rootdir = '/Volumes/GoogleDrive/Shared drives/';
+%% decide if you want to save plots or not
+save_plot = 0;  % 0 = NO saving, 1 = save plots
+%  figpath = [rootdir '2 Alaska Fjord Data Gathering Project/figures/paper_figs/'];
+figpath = ['/Users/simpson/Dropbox/Apps/Overleaf/akfjords_nps_paper/'];
+%% Load data to make figures/etc
+
+load([rootdir '2 Alaska Fjord Data Gathering Project/Data/data_output/fjord_data_combined.mat'])
+
+avgTandS
+txtsize = 9;
+dsize = 50;
+%% figure: MAP OF AVERAGED SURFACE 20m 
+
+
+% average  top 20m together
+indz1 = find(fjord.casts(1).z<20);
+surfavgTwin = nanmean(fjord.avgT(indz1,:,1),1);
+surfavgTspr = nanmean(fjord.avgT(indz1,:,2),1);
+surfavgTsum = nanmean(fjord.avgT(indz1,:,3),1);
+surfavgTfal = nanmean(fjord.avgT(indz1,:,4),1);
+
+set(0,'DefaultFigureWindowStyle','normal')
+figure
+set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+nn = 1;
+for n = 1:2
+    for j = 1:2
+        
+        gx(nn) = geoaxes('Position', [0.05+(j-1)*0.45 0.05+(n-1)*0.5 0.4 0.4]);
+        geobasemap colorterrain
+        hold on, box on
+        nn = nn+1;
+%         lat = [54.5 62];
+%         lon = [-154.5 -131];
+%         geoplot(gx(n), lat, lon);
+    end
+end
+
+dsize = 200;
+ma = 1;
+geoscatter(gx(3),fjord.lat,fjord.lon,dsize,surfavgTwin,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(3),cmocean('thermal',100))
+% caxis(gx(3),[4 12])
+
+geoscatter(gx(4),fjord.lat,fjord.lon,dsize,surfavgTspr,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(4),cmocean('thermal',100))
+c2 = colorbar(gx(4),'Position',[0.94 0.05 0.015 0.92]);
+ylabel(c2,'Temperature [\circ C]','fontsize',20,'Fontweight','bold')
+% caxis(gx(4),[0 50])
+
+geoscatter(gx(2),fjord.lat,fjord.lon,dsize,surfavgTsum,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(2),cmocean('thermal',100))
+% caxis(gx(2),[])
+
+geoscatter(gx(1),fjord.lat,fjord.lon,dsize,surfavgTfal,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(1),cmocean('thermal',100))
+% caxis(gx(1),[])
+
+gx(1).Position = [0.05 0.05 0.43 0.45];
+gx(2).Position = [0.5 0.050 0.43 0.45];
+gx(3).Position = [0.05 0.52 0.43 0.45];
+gx(4).Position = [0.5 0.52 0.43 0.45];
+
+seaslabel = [{'Summer'};{'Fall'};{'Winter'};{'Spring'}];
+abcd = 'dcab';
+for n = 1:length(gx)
+    gx(n).LatitudeLabel.String = [];
+    gx(n).LongitudeLabel.String = [];
+    gx(n).FontSize = 20;
+    gx(n).FontWeight = 'bold';
+    geolimits(gx(n),[54.5 62],[-156 -130])
+    text(gx(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',20,'Fontweight','bold')
+    caxis(gx(n),[0 12])
+end
+
+gx(4).LatitudeAxis.TickLabel = [];
+gx(2).LatitudeAxis.TickLabel = [];
+gx(3).LongitudeAxis.TickLabel = [];
+gx(4).LongitudeAxis.TickLabel = [];
+
+text(gx(3),0.8,1.04,'Average Temperature: Depth 0-20m','Units','normalized','Fontsize',20,'Fontweight','bold')
+if save_plot ==1; export_fig([figpath 'map_avgT_0-20m.png']); end
+%% figure: MAP OF AVERAGED  50-100m Temp
+
+% average  50-100m together
+indz1 = find(fjord.casts(1).z>50 & fjord.casts(1).z<100);
+surfavgTwin = nanmean(fjord.avgT(indz1,:,1),1);
+surfavgTspr = nanmean(fjord.avgT(indz1,:,2),1);
+surfavgTsum = nanmean(fjord.avgT(indz1,:,3),1);
+surfavgTfal = nanmean(fjord.avgT(indz1,:,4),1);
+
+set(0,'DefaultFigureWindowStyle','normal')
+figure
+set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+nn = 1;
+for n = 1:2
+    for j = 1:2
+        
+        gx(nn) = geoaxes('Position', [0.05+(j-1)*0.45 0.05+(n-1)*0.5 0.4 0.4]);
+        geobasemap colorterrain
+        hold on, box on
+        nn = nn+1;
+%         lat = [54.5 62];
+%         lon = [-154.5 -131];
+%         geoplot(gx(n), lat, lon);
+    end
+end
+
+dsize = 200;
+ma = 1;
+geoscatter(gx(3),fjord.lat,fjord.lon,dsize,surfavgTwin,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(3),cmocean('thermal',100))
+% caxis(gx(3),[4 12])
+
+geoscatter(gx(4),fjord.lat,fjord.lon,dsize,surfavgTspr,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(4),cmocean('thermal',100))
+c2 = colorbar(gx(4),'Position',[0.94 0.05 0.015 0.92]);
+ylabel(c2,'Temperature [\circ C]','fontsize',20,'Fontweight','bold')
+% caxis(gx(4),[0 50])
+
+geoscatter(gx(2),fjord.lat,fjord.lon,dsize,surfavgTsum,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(2),cmocean('thermal',100))
+% caxis(gx(2),[])
+
+geoscatter(gx(1),fjord.lat,fjord.lon,dsize,surfavgTfal,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(1),cmocean('thermal',100))
+% caxis(gx(1),[])
+
+gx(1).Position = [0.05 0.05 0.43 0.45];
+gx(2).Position = [0.5 0.050 0.43 0.45];
+gx(3).Position = [0.05 0.52 0.43 0.45];
+gx(4).Position = [0.5 0.52 0.43 0.45];
+
+seaslabel = [{'Summer'};{'Fall'};{'Winter'};{'Spring'}];
+abcd = 'dcab';
+for n = 1:length(gx)
+    gx(n).LatitudeLabel.String = [];
+    gx(n).LongitudeLabel.String = [];
+    gx(n).FontSize = 20;
+    gx(n).FontWeight = 'bold';
+    geolimits(gx(n),[54.5 62],[-156 -130])
+    text(gx(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',20,'Fontweight','bold')
+    caxis(gx(n),[0 12])
+end
+
+gx(4).LatitudeAxis.TickLabel = [];
+gx(2).LatitudeAxis.TickLabel = [];
+gx(3).LongitudeAxis.TickLabel = [];
+gx(4).LongitudeAxis.TickLabel = [];
+
+text(gx(3),0.8,1.04,'Average Temperature: Depth 50-100m','Units','normalized','Fontsize',20,'Fontweight','bold')
+if save_plot ==1; export_fig([figpath 'map_avgT_50-100m.png']); end
+%% figure: MAP OF AVERAGED Below 150m
+
+% average  below 150m together
+indz1 = find(fjord.casts(1).z>150);
+surfavgTwin = nanmean(fjord.avgT(indz1,:,1),1);
+surfavgTspr = nanmean(fjord.avgT(indz1,:,2),1);
+surfavgTsum = nanmean(fjord.avgT(indz1,:,3),1);
+surfavgTfal = nanmean(fjord.avgT(indz1,:,4),1);
+
+set(0,'DefaultFigureWindowStyle','normal')
+figure
+set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+nn = 1;
+for n = 1:2
+    for j = 1:2
+        
+        gx(nn) = geoaxes('Position', [0.05+(j-1)*0.45 0.05+(n-1)*0.5 0.4 0.4]);
+        geobasemap colorterrain
+        hold on, box on
+        nn = nn+1;
+%         lat = [54.5 62];
+%         lon = [-154.5 -131];
+%         geoplot(gx(n), lat, lon);
+    end
+end
+
+dsize = 200;
+ma = 1;
+geoscatter(gx(3),fjord.lat,fjord.lon,dsize,surfavgTwin,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(3),cmocean('thermal',100))
+% caxis(gx(3),[4 12])
+
+geoscatter(gx(4),fjord.lat,fjord.lon,dsize,surfavgTspr,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(4),cmocean('thermal',100))
+c2 = colorbar(gx(4),'Position',[0.94 0.05 0.015 0.92]);
+ylabel(c2,'Temperature [\circ C]','fontsize',20,'Fontweight','bold')
+% caxis(gx(4),[0 50])
+
+geoscatter(gx(2),fjord.lat,fjord.lon,dsize,surfavgTsum,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(2),cmocean('thermal',100))
+% caxis(gx(2),[])
+
+geoscatter(gx(1),fjord.lat,fjord.lon,dsize,surfavgTfal,'filled','MarkerFaceAlpha',ma,'MarkerEdgeColor','k');
+colormap(gx(1),cmocean('thermal',100))
+% caxis(gx(1),[])
+
+gx(1).Position = [0.05 0.05 0.43 0.45];
+gx(2).Position = [0.5 0.050 0.43 0.45];
+gx(3).Position = [0.05 0.52 0.43 0.45];
+gx(4).Position = [0.5 0.52 0.43 0.45];
+
+seaslabel = [{'Summer'};{'Fall'};{'Winter'};{'Spring'}];
+abcd = 'dcab';
+for n = 1:length(gx)
+    gx(n).LatitudeLabel.String = [];
+    gx(n).LongitudeLabel.String = [];
+    gx(n).FontSize = 20;
+    gx(n).FontWeight = 'bold';
+    geolimits(gx(n),[54.5 62],[-156 -130])
+    text(gx(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',20,'Fontweight','bold')
+    caxis(gx(n),[0 12])
+end
+
+gx(4).LatitudeAxis.TickLabel = [];
+gx(2).LatitudeAxis.TickLabel = [];
+gx(3).LongitudeAxis.TickLabel = [];
+gx(4).LongitudeAxis.TickLabel = [];
+
+text(gx(3),0.8,1.04,'Average Temperature: Depth > 150m','Units','normalized','Fontsize',20,'Fontweight','bold')
+if save_plot ==1; export_fig([figpath 'map_avgT_150m.png']); end
+
+%% Make T/S diagrams separated by season 
+% fjord.avgT.seas = cat(3,fjord.avgT.win,fjord.avgT.spr,fjord.avgT.sum,fjord.avgT.fal);
+% fjord.avgS.seas = cat(3,fjord.avgS.win,fjord.avgS.spr,fjord.avgS.sum,fjord.avgS.fal);
+
+% figure
+% set(gcf,'Units','centimeters','Position', [0 0 16.8 10])
+% %set(gcf,'Position',[376 60 1476 925])
+% set(gcf,'Color','w')
+% 
+% ax(1) = subplot(221); % Winter
+% hold on, box on
+% T_S_diagram
+% 
+% 
+% ax(2) = subplot(222); % Spring
+% hold on, box on,
+% T_S_diagram
+% 
+% 
+% ax(3) = subplot(223); % summer
+% hold on, box on
+% T_S_diagram
+% 
+% 
+% ax(4) = subplot(224); % fall
+% hold on, box on
+% T_S_diagram
+% 
+% 
+% seas = {'win';'spr';'sum';'fal'};
+% colors2plot = {'Blues';'Reds';'Greens';'Purples';'Greys'};
+% regionnames = {'cook';'kenai';'prince';'yakutat';'southeast'};
+% 
+% 
+% clear ldgnames
+% clear pl
+% ldgnames = {};
+% nn = 1;
+% mksize = 10;
+% for n = 1:length(seas)
+% 
+%     for m = 1:length(fjord.lat)
+%         
+%         if sum(isnan(fjord.avgT(:,m,n))) < 200 & sum(isnan(fjord.avgS(:,m,n))) < 200
+%            
+% %             if ~isnan(fjord.outer_sill_depth(m))
+% %                 indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+% %                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',fjord.cmap(m,:),'Parent',ax(n));
+% %                 indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+% %                 pl(nn) = plot(fjord.avgS(indz2,m,n),fjord.avgT(indz2,m,n),'o','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(n));
+% %             else
+% %                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',fjord.cmap(m,:),'Parent',ax(n));
+% %             end
+% 
+%             pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'.','Markersize',dsize,'Color',fjord.cmap(m,:),'Parent',ax(n));
+%             ll = strrep(fjord.name(m),'_',' ');
+%             ldgnames(nn) = ll;
+%             nn = nn+1;
+%         end
+%     end
+% end
+% 
+% [a,b] = unique(ldgnames);
+% lg = legend([pl(b)],a);
+% lg.Position = [0.03 0.1 0.1 0.8];
+% lg.FontSize = 7;
+% % ax(1).Position = [0.1 0.55 0.41 0.43];
+% % ax(2).Position = [0.55 0.55 0.41 0.43];
+% % ax(3).Position = [0.1 0.08 0.41 0.43]; 
+% % ax(4).Position = [0.55 0.08 0.41 0.43];
+% 
+% seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+% abcd = 'abcd';
+% for n = 1:length(ax)
+% 
+%     ax(n).FontSize = txtsize;
+%     ax(n).FontWeight = 'bold';
+%     
+%     text(ax(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',20,'Fontweight','bold')
+%     caxis(ax(n),[0 12])
+%     set(ax(n),'YLim', [3 14]);
+%     set(ax(n),'XLim', [20 35]);
+% end
+% 
+% ylabel(ax(1),'Temperature')
+% ylabel(ax(3),'Temperature')
+% xlabel(ax(3),'Salinity')
+% xlabel(ax(4),'Salinity')
+% 
+% % set(lg(1),'Location','westoutside')
+% % set(lg(2),'Location','eastoutside')
+% % set(lg(3),'Location','westoutside')
+% % set(lg(4),'Location','eastoutside')
+% 
+% ax(1).Position = [0.2 0.55 0.35 0.41];
+% ax(2).Position = [0.6 0.55 0.35 0.41];
+% ax(3).Position = [0.2 0.08 0.35 0.41]; 
+% ax(4).Position = [0.6 0.08 0.35 0.41];
+% 
+% if save_plot ==1; export_fig([figpath 'T_S_diagram2.png']); end
+
+%% Plot Temperature with Depth
+seas = {'win';'spr';'sum';'fal'};
+colors2plot = {'Blues';'Reds';'Greens';'Purples';'Greys'};
+regionnames = {'cook';'kenai';'prince';'yakutat';'southeast'};
+rglabels = {'Cook Inlet'; 'Kenai Peninsula'; 'Prince William Sound'; 'Yakutat Coast'; 'Southeast'};
+fignum = [14;13;12;11;10];
+figlab = {'CI';'KP';'PWS';'YC';'SE'};
+
+for m = 1:length(regionnames)
+figure
+set(gcf,'Units','centimeters','Position', [0 0 16.8 16])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+ax(1) = subplot(221); % Winter
+hold on, grid on, box on
+
+ax(2) = subplot(222); % Spring
+hold on, grid on, box on
+
+ax(3) = subplot(223); % summer
+hold on, grid on, box on
+
+ax(4) = subplot(224); % fall
+hold on, grid on, box on
+
+for n = 1:length(seas)
+    seasdata = fjord.prof_num.(seas{n});
+    seasdata(find(seasdata == 0)) = NaN;
+    nn = 1;
+    clear pl
+    clear ldgnames
+    
+        indreg = find(contains(fjord.geog_region,regionnames{m}));
+        regTdata = [];
+        regTmin = [];
+        regTmax = [];
+        regTnum = [];
+%         cmapreg = distinguishable_colors(length(indreg));
+        
+        for mm = 1:length(indreg)
+            regTdata(:,mm) = fjord.avgT(:,indreg(mm),n);
+            regTmin(:,mm) = fjord.minT(:,indreg(mm),n);%lowCI_T
+            regTmax(:,mm) = fjord.maxT(:,indreg(mm),n);%higCI_T
+            regTnum(:,mm) = fjord.numT(:,indreg(mm),n);
+            regnames(mm) = fjord.name(indreg(mm));
+        end
+        
+        numwdat = find(sum(isnan(regTdata))<200);
+%         cmap = brewermap(length(numwdat),'Set1');
+%         cmap = cmocean('thermal',length(numwdat));
+%         cmap = flipud(brewermap(length(numwdat)*2,colors2plot{m}));
+%         cmap = flipud(cmap(1:length(numwdat),:));
+        
+        
+        for rd = 1:length(numwdat)
+            avgz = moving_average(fjord.casts(1).z,2,2);
+            avgT = moving_average(regTdata(:,numwdat(rd)),2,2);
+%            plot(regTdata(:,rd),fjord.casts(1).z,'linewidth',2,'Color',cmap(rd,:),'Parent',ax(n))
+            indcmap = find(contains(fjord.name,regnames(numwdat(rd))));
+            minT = moving_average(regTmin(:,numwdat(rd)),2,2);
+            maxT = moving_average(regTmax(:,numwdat(rd)),2,2);
+            
+            indminmax = find(~isnan(minT) & ~isnan(maxT));
+            patch([minT(indminmax) fliplr(maxT(indminmax))], [avgz(indminmax) fliplr(avgz(indminmax))], fjord.cmap(indcmap,:),'FaceAlpha',0.2,'EdgeColor',fjord.cmap(indcmap,:),'EdgeAlpha',0,'Parent',ax(n))
+            pl(nn) = plot(avgT,avgz,'linewidth',2,'Color',fjord.cmap(indcmap,:),'Parent',ax(n));
+            
+            ll = strrep(regnames(numwdat(rd)),'_',' ');
+            ldgnames(nn) = {cell2mat([(ll) ': ' num2str(regTnum(numwdat(rd)))])}; %ll;
+ 
+            nn = nn+1;
+        end
+    
+    lg(n) = legend([pl],ldgnames);
+   
+end
+
+
+
+seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+abcd = 'abcd';
+for n = 1:4;%length(ax)
+
+    ax(n).FontSize = txtsize;
+    ax(n).FontWeight = 'bold';
+    
+    text(ax(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',txtsize,'Fontweight','bold')
+    caxis(ax(n),[0 12])
+    set(ax(n),'YDir','reverse')
+    lg(n).FontSize = 6;
+    set(ax(n),'XLim',[0 15])
+    set(ax(n),'YLim',[0 500])
+       
+end
+
+text(ax(1),1.05,1.06,[rglabels{m} ' Temperature Averages'],'units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center')
+ylabel(ax(1),'Depth')
+ylabel(ax(3),'Depth')
+xlabel(ax(3),'Temperature')
+xlabel(ax(4),'Temperature')
+
+set(lg(1),'Location','southeast')
+set(lg(3),'Location','southeast')
+set(lg(2),'Location','southeast')
+set(lg(4),'Location','southeast')
+
+ax(1).XTickLabel = [];
+ax(2).XTickLabel = [];
+ax(2).YTickLabel = [];
+ax(4).YTickLabel = [];
+
+ax(1).Position = [0.1 0.55 0.4 0.38];
+ax(2).Position = [0.55 0.55 0.4 0.38];
+ax(3).Position = [0.1 0.08 0.4 0.38]; 
+ax(4).Position = [0.55 0.08 0.4 0.38];
+
+if save_plot ==1; export_fig([figpath 'Fig' num2str(fignum(n)) '_TDepth' figlab{n} '.pdf']); end
+% if save_plot ==1; export_fig([figpath 'avgTempdepth_' regionnames{m} '.png']); end
+end
+
+%% Plot Temperature with Depth DIFFERENT FORMAT
+glac_cat = 'no_glacier';
+seas = {'win';'spr';'sum';'fal'};
+colors2plot = {'Blues';'Reds';'Greens';'Purples';'Greys'};
+regionnames = {'cook';'kenai';'prince';'yakutat';'southeast'};
+rglabels = {'Cook Inlet'; 'Kenai Pen.'; 'PWS'; 'Yakutat Coast'; 'Southeast'};
+figlab = {'CI';'KP';'PWS';'YC';'SE'};
+subpnum = 20;
+figure
+
+    nn = 1;
+    clear pl
+    clear ldgnames
+for m = 1:length(regionnames)
+
+set(gcf,'Units','centimeters','Position', [0 0 16 16])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+sprange = 4*m-3:4*m;
+
+ax(sprange(1)) = subplot(4,5,sprange(1)); % Winter
+hold on, grid on, box on
+
+ax(sprange(2)) = subplot(4,5,sprange(2)); % Spring
+hold on, grid on, box on
+
+ax(sprange(3)) = subplot(4,5,sprange(3)); % summer
+hold on, grid on, box on
+
+ax(sprange(4)) = subplot(4,5,sprange(4)); % fall
+hold on, grid on, box on
+
+for n = 1:length(seas)
+    seasdata = fjord.prof_num.(seas{n});
+    seasdata(find(seasdata == 0)) = NaN;
+
+    
+        indreg = find(contains(fjord.geog_region,regionnames{m}) & contains(fjord.glac_category,glac_cat));
+        regTdata = [];
+        regTmin = [];
+        regTmax = [];
+        regTnum = [];
+%         cmapreg = distinguishable_colors(length(indreg));
+        
+if ~isempty(indreg)
+        for mm = 1:length(indreg)
+            regTdata(:,mm) = fjord.avgT(:,indreg(mm),n);
+            regTmin(:,mm) = fjord.minT(:,indreg(mm),n);%lowCI_T
+            regTmax(:,mm) = fjord.maxT(:,indreg(mm),n);%higCI_T
+            regTnum(:,mm) = fjord.numT(:,indreg(mm),n);
+            regnames(mm) = fjord.name(indreg(mm));
+        end
+        
+        numwdat = find(sum(isnan(regTdata))<200);
+%         cmap = brewermap(length(numwdat),'Set1');
+%         cmap = cmocean('thermal',length(numwdat));
+%         cmap = flipud(brewermap(length(numwdat)*2,colors2plot{m}));
+%         cmap = flipud(cmap(1:length(numwdat),:));
+        
+       
+        for rd = 1:length(numwdat)
+            
+            avgz = moving_average(fjord.casts(1).z,2,2);
+            avgT = moving_average(regTdata(:,numwdat(rd)),2,2);
+%            plot(regTdata(:,rd),fjord.casts(1).z,'linewidth',2,'Color',cmap(rd,:),'Parent',ax(n))
+            indcmap = find(contains(fjord.name,regnames(numwdat(rd))));
+            minT = moving_average(regTmin(:,numwdat(rd)),2,2);
+            maxT = moving_average(regTmax(:,numwdat(rd)),2,2);
+            
+            indminmax = find(~isnan(minT) & ~isnan(maxT));
+
+             
+            patch([minT(indminmax) fliplr(maxT(indminmax))], [avgz(indminmax) fliplr(avgz(indminmax))], fjord.cmap(indcmap,:),'FaceAlpha',0.2,'EdgeColor',fjord.cmap(indcmap,:),'EdgeAlpha',0,'Parent',ax(sprange(n)))
+            pl(nn) = plot(avgT,avgz,'linewidth',2,'Color',[fjord.cmap(indcmap,:) 0.6],'Parent',ax(sprange(n)));
+            
+            ll = strrep(regnames(numwdat(rd)),'_',' ');
+%             ldgnames(nn) = {cell2mat([(ll) ': ' num2str(regTnum(numwdat(rd)))])}; %ll;
+            ldgnames(nn) = ll;
+            nn = nn+1;
+             
+        end
+    
+%     lg(n) = legend([pl],ldgnames);
+end
+end
+end
+[a,b] = unique(ldgnames);
+lg = legend([pl(b)],a);
+lg.Position = [0.85 0.28 0.1 0.36];
+lg.FontSize = 7;
+lg.Box = 'off';
+
+seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+abcd = 'afkpbglqchmrdinsejot';
+Ylab = [{'0'};{'100'};{'200'};{'300'};{'400'}];
+Xlab =[{'0'};{'5'};{'10'}];
+
+for n = 1:length(ax)
+
+    ax(n).FontSize = txtsize;
+    ax(n).FontWeight = 'bold';
+    
+    text(ax(n),0.02,0.95,[abcd(n) '.) '],'units','normalized','Fontsize',txtsize,'Fontweight','bold')
+%     caxis(ax(n),[0 12])
+    set(ax(n),'YDir','reverse')
+%     lg(n).FontSize = 4;
+    set(ax(n),'XLim',[0 14])
+    set(ax(n),'YLim',[0 450])
+   
+    ax(n).XTickLabel = [];
+    ax(n).YTickLabel = [];
+end
+
+for n = 1:4
+    ax(n).YTickLabel = Ylab;
+end
+
+for n = 4:4:20
+    ax(n).XTickLabel = Xlab;
+end
+
+  a = 1;
+for n = 1:4:17
+    text(ax(n),0.5,1.06,[rglabels{a} ],'units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center')
+    a = a+1;
+end
+text(ax(12),0.5,-0.2,'Temperature (\circ C)','units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center')
+text(ax(2),-0.4,0,'Depth (m)','units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center','Rotation',90)
+
+text(ax(1),-0.4,0.5,'Winter','units','normalized','Color',colors.p,'Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center','Rotation',90)
+text(ax(2),-0.4,0.5,'Spring','units','normalized','Color',colors.c,'Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center','Rotation',90)
+text(ax(3),-0.4,0.5,'Summer','units','normalized','Color',colors.o,'Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center','Rotation',90)
+text(ax(4),-0.4,0.5,'Fall','units','normalized','Color',colors.r,'Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center','Rotation',90)
+
+%      
+%     ax(n).YTickLabel =
+% text(ax(1),0.5,1.06,[rglabels{m} ],'units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center')
+% ylabel(ax(1),'Depth')
+% ylabel(ax(2),'Depth')
+% ylabel(ax(3),'Depth')
+% ylabel(ax(4),'Depth')
+% 
+% xlabel(ax(4),'Temperature')
+
+% set(lg(1),'Location','southeast')
+% set(lg(3),'Location','southeast')
+% set(lg(2),'Location','southeast')
+% set(lg(4),'Location','southeast')
+
+% ax(1).XTickLabel = [];
+% ax(2).XTickLabel = [];
+% ax(3).XTickLabel = [];
+
+ax(1).Position = [0.09 0.73 0.13 0.2];
+ax(2).Position = [0.09 0.51 0.13 0.2];
+ax(3).Position = [0.09 0.29 0.13 0.2]; 
+ax(4).Position = [0.09 0.07 0.13 0.2];
+
+ax(5).Position = [0.23 0.73 0.13 0.2];
+ax(6).Position = [0.23 0.51 0.13 0.2];
+ax(7).Position = [0.23 0.29 0.13 0.2]; 
+ax(8).Position = [0.23 0.07 0.13 0.2];
+
+ax(9).Position =  [0.37 0.73 0.13 0.2];
+ax(10).Position = [0.37 0.51 0.13 0.2];
+ax(11).Position = [0.37 0.29 0.13 0.2]; 
+ax(12).Position = [0.37 0.07 0.13 0.2];
+
+ax(13).Position = [0.51 0.73 0.13 0.2];
+ax(14).Position = [0.51 0.51 0.13 0.2];
+ax(15).Position = [0.51 0.29 0.13 0.2]; 
+ax(16).Position = [0.51 0.07 0.13 0.2];
+
+ax(17).Position = [0.65 0.73 0.13 0.2];
+ax(18).Position = [0.65 0.51 0.13 0.2];
+ax(19).Position = [0.65 0.29 0.13 0.2]; 
+ax(20).Position = [0.65 0.07 0.13 0.2];
+
+if save_plot ==1; export_fig([figpath 'Fig10_TDepth_no_glacier.pdf']); 
+print(gcf,'-dpdf')
+end
+% if save_plot ==1; export_fig([figpath 'avgTempdepth_' regionnames{m} '.png']); end
+
+%% Make T/S diagrams separated by season and sill depth
+% fjord.avgT.seas = cat(3,fjord.avgT.win,fjord.avgT.spr,fjord.avgT.sum,fjord.avgT.fal);
+% fjord.avgS.seas = cat(3,fjord.avgS.win,fjord.avgS.spr,fjord.avgS.sum,fjord.avgS.fal);
+
+figure
+
+set(gcf,'Units','centimeters','Position', [0 0 16.8 16])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+ax(1) = subplot(421); % Winter
+hold on, box on
+T_S_diagram
+
+ax(2) = subplot(423); % Spring
+hold on, box on,
+T_S_diagram
+
+ax(3) = subplot(425); % summer
+hold on, box on
+T_S_diagram
+
+ax(4) = subplot(427); % fall
+hold on, box on
+T_S_diagram
+
+% ax(5) = subplot(422); % Winter
+% hold on, box on
+% T_S_diagram
+% 
+% ax(6) = subplot(424); % Spring
+% hold on, box on,
+% T_S_diagram
+% 
+% ax(7) = subplot(426); % summer
+% hold on, box on
+% T_S_diagram
+% 
+% ax(8) = subplot(428); % fall
+% hold on, box on
+% T_S_diagram
+
+seas = {'win';'spr';'sum';'fal'};
+colors2plot = {'Blues';'Reds';'Greens';'Purples';'Greys'};
+regionnames = {'cook';'kenai';'prince';'yakutat';'southeast'};
+
+
+clear ldgnames
+clear pl
+ldgnames = {};
+nn = 1;
+mksize = 5;
+% %%
+
+clear ldgnames
+ldgnames = {};
+nn = 1;
+
+glac_cat = 'tidewater';
+
+for n = 1:length(seas)
+
+    for m = 1:length(fjord.lat)
+        
+        if sum(isnan(fjord.avgT(:,m,n))) < 200 & sum(isnan(fjord.avgS(:,m,n))) < 200 & contains(fjord.glac_category{m},glac_cat)
+%             if contains(fjord.glac_category{m},'no_glacier')
+%                 mm = n+4;
+%             else
+%                 mm = n;
+%             end
+                mm = n;
+            if fjord.outer_sill_depth(m)<=10
+                indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.dg,'Parent',ax(mm));
+                indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz2,m,n),fjord.avgT(indz2,m,n),'o','Markersize',mksize,'Color',colors.dg,'MarkerFaceColor',colors.dg,'Parent',ax(mm));
+                
+                ll = strrep(fjord.name(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+            
+            if fjord.outer_sill_depth(m)>10 & fjord.outer_sill_depth(m)<100
+                indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.b,'Parent',ax(mm));
+                indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz2,m,n),fjord.avgT(indz2,m,n),'o','Markersize',mksize,'Color',colors.b,'MarkerFaceColor',colors.b,'Parent',ax(mm));
+                
+                ll = strrep(fjord.name(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+            
+            if fjord.outer_sill_depth(m)>=100
+                indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.r,'Parent',ax(mm));
+                indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz2,m,n),fjord.avgT(indz2,m,n),'o','Markersize',mksize,'Color',colors.r,'MarkerFaceColor',colors.r,'Parent',ax(mm));
+                
+                ll = strrep(fjord.name(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+            
+        end
+    end
+end
+
+[a,b] = unique(ldgnames);
+lg = legend([pl(b)],a);
+if contains(glac_cat,'no_glacier')
+    lg.Position = [0.05 0.53 0.1 0.39];
+ else
+    lg.Position = [0.05 0.6 0.1 0.26];
+ end
+lg.FontSize = 7;
+lg.Box = 'off';
+
+% %%
+seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+abcd = 'abcdefghi';
+for n = 1:4;%length(ax)
+
+    ax(n).FontSize = txtsize;
+%     ax(n).FontWeight = 'bold';
+    
+    if n<=4
+        text(ax(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',txtsize)
+    else
+        text(ax(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n-4}],'units','normalized','Fontsize',txtsize)
+    end
+    caxis(ax(n),[0 12])
+    set(ax(n),'YLim', [3 14]);
+    set(ax(n),'XLim', [20 35]);
+end
+
+text(ax(3),0.85,-0.2,'Salinity [psu]','units','normalized','Fontsize',txtsize)
+text(ax(3),-0.2,0.6,'Temperature [\circC]','units','normalized','Fontsize',txtsize,'Rotation',90,'VerticalAlignment','middle')
+
+% ylabel(ax(1:4),'Temperature')
+% xlabel(ax(2),'Salinity')
+% xlabel(ax(4),'Salinity')
+% xlabel(ax(8),'Salinity')
+xticklabels(ax(1:2),[])
+yticklabels(ax(2:2:4),[])
+% xticklabels(ax(5:7),[])
+% yticklabels(ax(5:8),[])
+
+
+% title(ax(1),'Tidewater Glacier','Fontsize',txtsize','Fontweight','bold')
+% title(ax(5),'No Tidewater Glacier','Fontsize',txtsize','Fontweight','bold')
+
+ax(1).Position = [0.27 0.74 0.25 0.2];
+ax(2).Position = [0.54 0.74 0.25 0.2];
+ax(3).Position = [0.27 0.52 0.25 0.2];
+ax(4).Position = [0.54 0.52 0.25 0.2];
+
+% ax(1).Position = [0.25 0.74 0.25 0.2];
+% ax(2).Position = [0.25 0.52 0.25 0.2];
+% ax(3).Position = [0.25 0.3 0.25 0.2]; 
+% ax(4).Position = [0.25 0.08 0.25 0.2];
+% 
+% ax(5).Position = [0.53 0.74 0.25 0.2];
+% ax(6).Position = [0.53 0.52 0.25 0.2];
+% ax(7).Position = [0.53 0.3 0.25 0.2]; 
+% ax(8).Position = [0.53 0.08 0.25 0.2];
+% if save_plot ==1; export_fig([figpath 'T_S_diagram_sill_depth_allsamecolor.png']); end
+% if save_plot ==1; export_fig([figpath 'T_S_diagram_sill_depth_allsamecolor.png']); end
+if save_plot ==1; export_fig([figpath 'Fig08_TSdiagSill_combo.pdf']); end
+
+%% Make T/S diagrams separated by season and tidewater glacier or no glacier
+
+figure
+set(gcf,'Units','centimeters','Position', [0 0 16.8 16])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+ax(1) = subplot(421); % Winter
+hold on, box on
+T_S_diagram
+
+ax(2) = subplot(423); % Spring
+hold on, box on,
+T_S_diagram
+
+ax(3) = subplot(425); % summer
+hold on, box on
+T_S_diagram
+
+ax(4) = subplot(427); % fall
+hold on, box on
+T_S_diagram
+
+% ax(5) = subplot(422); % Winter
+% hold on, box on
+% T_S_diagram
+% 
+% ax(6) = subplot(424); % Spring
+% hold on, box on,
+% T_S_diagram
+% 
+% ax(7) = subplot(426); % summer
+% hold on, box on
+% T_S_diagram
+% 
+% ax(8) = subplot(428); % fall
+% hold on, box on
+% T_S_diagram
+
+
+seas = {'win';'spr';'sum';'fal'};
+regionnames = {'cook';'kenai';'prince';'yakutat';'southeast'};
+rgcolors = [colors.b; colors.m; colors.dg; colors.p; colors.r];
+
+
+clear ldgnames
+clear pl
+ldgnames = {};
+nn = 1;
+mksize = 50;
+% %%
+clear ldgnames
+ldgnames = {};
+nn = 1;
+
+glac_cat = 'tidewater';
+for n = 1:length(seas)
+
+    for m = 1:length(fjord.lat)
+        
+        if sum(isnan(fjord.avgT(:,m,n))) < 200 & sum(isnan(fjord.avgS(:,m,n))) < 200 & contains(fjord.glac_category{m},glac_cat)
+%             if contains(fjord.glac_category{m},'no_glacier')
+%                 mm = n+4;
+%             else
+%                 mm = n;
+%             end
+            mm = n;
+
+           if contains(fjord.geog_region{m},'cook')
+%               pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'*','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+              pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,fjord.cmap(m,:),'*','MarkerEdgeAlpha',0.5,'Parent',ax(mm)); 
+              ll = strrep(fjord.name(m),'_',' ');
+              ldgnames(nn) = ll;
+              nn = nn+1;
+           end
+           
+           if contains(fjord.geog_region{m},'kenai')
+%               pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'^','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+              pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,fjord.cmap(m,:),'^','filled','MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0.5,'Parent',ax(mm));
+              ll = strrep(fjord.name(m),'_',' ');
+              ldgnames(nn) = ll;
+              nn = nn+1;
+           end
+           
+           if contains(fjord.geog_region{m},'prince')
+%               pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'o','Markersize',5,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+              pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,fjord.cmap(m,:),'o','filled','MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0.5,'Parent',ax(mm));
+%               pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,fjord.cmap(m,:),'^','filled','MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0.5,'Parent',ax(mm));
+              ll = strrep(fjord.name(m),'_',' ');
+              ldgnames(nn) = ll;
+              nn = nn+1;          
+           end
+           
+           if contains(fjord.geog_region{m},'yakutat')
+%               pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'square','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+              pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,fjord.cmap(m,:),'square','filled','MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0.5,'Parent',ax(mm));
+              ll = strrep(fjord.name(m),'_',' ');
+              ldgnames(nn) = ll;
+              nn = nn+1;           
+           end
+           
+           if contains(fjord.geog_region{m},'southeast')
+%               pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'diamond','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+               pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,fjord.cmap(m,:),'diamond','filled','MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0.5,'Parent',ax(mm));
+              ll = strrep(fjord.name(m),'_',' ');
+              ldgnames(nn) = ll;
+              nn = nn+1;           
+           end
+            
+        end
+    end
+end
+
+clear lg
+
+[a,b] = unique(ldgnames);
+lg = legend([pl(b)],a);
+if contains(glac_cat,'no_glacier')
+    lg.Position = [0.05 0.53 0.1 0.39];
+ else
+    lg.Position = [0.05 0.6 0.1 0.26];
+ end
+%  end
+lg.FontSize = 7;
+lg.Box = 'off';
+
+
+
+% %%
+seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+abcd = 'abcdefgh';
+for n = 1:4;%length(ax)
+
+    ax(n).FontSize = txtsize;
+%     ax(n).FontWeight = 'bold';
+    
+    if n<=4
+        text(ax(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',txtsize)
+    else
+        text(ax(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n-4}],'units','normalized','Fontsize',txtsize)
+    end
+
+    caxis(ax(n),[0 12])
+    set(ax(n),'YLim', [3 14]);
+    set(ax(n),'XLim', [20 35]);
+    set(ax(n),'XTick', [22 27 32]);
+end
+text(ax(3),0.85,-0.2,'Salinity (psu)','units','normalized','Fontsize',txtsize)
+text(ax(3),-0.2,0.6,'Temperature (\circC)','units','normalized','Fontsize',txtsize,'Rotation',90,'VerticalAlignment','middle')
+
+% ylabel(ax(1:4),'Temperature')
+% xlabel(ax(2),'Salinity')
+% xlabel(ax(4),'Salinity')
+% xlabel(ax(8),'Salinity')
+xticklabels(ax(1:2),[])
+yticklabels(ax(2:2:4),[])
+% xticklabels(ax(5:7),[])
+% yticklabels(ax(5:8),[])
+
+
+% title(ax(1),'Tidewater Glacier','Fontsize',txtsize','Fontweight','bold')
+% title(ax(5),'No Tidewater Glacier','Fontsize',txtsize','Fontweight','bold')
+
+ax(1).Position = [0.27 0.74 0.25 0.2];
+ax(2).Position = [0.54 0.74 0.25 0.2];
+ax(3).Position = [0.27 0.52 0.25 0.2];
+ax(4).Position = [0.54 0.52 0.25 0.2];
+
+% ax(1).Position = [0.25 0.74 0.25 0.2];
+% ax(2).Position = [0.25 0.52 0.25 0.2];
+% ax(3).Position = [0.25 0.3 0.25 0.2]; 
+% ax(4).Position = [0.25 0.08 0.25 0.2];
+% 
+% ax(5).Position = [0.53 0.74 0.25 0.2];
+% ax(6).Position = [0.53 0.52 0.25 0.2];
+% ax(7).Position = [0.53 0.3 0.25 0.2]; 
+% ax(8).Position = [0.53 0.08 0.25 0.2];
+
+% if save_plot ==1; export_fig([figpath 'T_S_diagram_geogregion2.png']); end
+if save_plot ==1; export_fig([figpath 'TS_diag_TideGlac.pdf']); end
+
+%% Plot T/S diagram separated by depths for summer 
+
+figure
+set(gcf,'Units','centimeters','Position', [0 0 16.8 16])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+ax(1) = subplot(421); % 0-20m
+hold on, box on
+T_S_diagram
+
+ax(2) = subplot(423); % 20-100m
+hold on, box on,
+T_S_diagram
+
+ax(3) = subplot(425); % 100-200m
+hold on, box on
+T_S_diagram
+
+ax(4) = subplot(427); % 200-400m
+hold on, box on
+T_S_diagram
+
+ax(5) = subplot(422); % 0-20m
+hold on, box on
+T_S_diagram
+
+ax(6) = subplot(424); % 20-100m
+hold on, box on,
+T_S_diagram
+
+ax(7) = subplot(426); % 100-200m
+hold on, box on
+T_S_diagram
+
+ax(8) = subplot(428); % 200-400m
+hold on, box on
+T_S_diagram
+
+%%
+clear ldgnames
+ldgnames = {};
+nn = 1;
+
+glac_cat = 'no_glac';
+depthrange = [0;20;100;200;400];
+seas = {'win';'spr';'sum';'fal'};
+regionnames = {'cook';'kenai';'prince';'yakutat';'southeast'};
+
+nn = 1;
+for d = 1:length(depthrange)-1;
+    
+ for m = 1:length(fjord.lat)
+  n = 3; % setting season to summer       
+        if sum(isnan(fjord.avgT(:,m,n))) < 200 & sum(isnan(fjord.avgS(:,m,n))) < 200 & contains(fjord.glac_category{m},glac_cat)
+
+             if contains(fjord.glac_category{m},'no_glacier')
+                mm = d+4;
+            else
+                mm = d;
+             end
+
+            clear indz
+            indz = find(fjord.casts(m).z>=depthrange(d) & fjord.casts(m).z<=depthrange(d+1));
+
+             if fjord.outer_sill_depth(m)<=10
+%                 indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.dg,'Parent',ax(mm));
+%                 indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'o','Markersize',mksize,'Color',colors.dg,'MarkerFaceColor',colors.dg,'Parent',ax(mm));
+                
+                ll = strrep(fjord.name(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+            
+            if fjord.outer_sill_depth(m)>10 & fjord.outer_sill_depth(m)<100
+%                 indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.b,'Parent',ax(mm));
+%                 indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'o','Markersize',mksize,'Color',colors.b,'MarkerFaceColor',colors.b,'Parent',ax(mm));
+                
+                ll = strrep(fjord.name(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+            
+            if fjord.outer_sill_depth(m)>=100
+%                 indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.r,'Parent',ax(mm));
+%                 indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+                pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'o','Markersize',mksize,'Color',colors.r,'MarkerFaceColor',colors.r,'Parent',ax(mm));
+                
+                ll = strrep(fjord.name(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+            
+%            if contains(fjord.geog_region{m},'cook')
+%               pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'*','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+%               ll = strrep(fjord.name(m),'_',' ');
+%               ldgnames(nn) = ll;
+%               nn = nn+1;
+%            end
+%            
+%            if contains(fjord.geog_region{m},'kenai')
+%               pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'^','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+%               ll = strrep(fjord.name(m),'_',' ');
+%               ldgnames(nn) = ll;
+%               nn = nn+1;
+%            end
+%            
+%            if contains(fjord.geog_region{m},'prince')
+%               pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'o','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+%               ll = strrep(fjord.name(m),'_',' ');
+%               ldgnames(nn) = ll;
+%               nn = nn+1;          
+%            end
+%            
+%            if contains(fjord.geog_region{m},'yakutat')
+%               pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'square','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+%               ll = strrep(fjord.name(m),'_',' ');
+%               ldgnames(nn) = ll;
+%               nn = nn+1;           
+%            end
+%            
+%            if contains(fjord.geog_region{m},'southeast')
+%               pl(nn) = plot(fjord.avgS(indz,m,n),fjord.avgT(indz,m,n),'diamond','Markersize',mksize,'Color',fjord.cmap(m,:),'MarkerFaceColor',fjord.cmap(m,:),'Parent',ax(mm)); 
+%               ll = strrep(fjord.name(m),'_',' ');
+%               ldgnames(nn) = ll;
+%               nn = nn+1;           
+%            end
+            
+        end
+ end
+ 
+end
+[a,b] = unique(ldgnames);
+lg = legend([pl(b)],a);
+if contains(glac_cat,'no_glacier')
+    lg.Position = [0.83 0.3050 0.1 0.39];
+ else
+     lg.Position = [0.05 0.37 0.1 0.26];
+ end
+lg.FontSize = 7;
+lg.Box = 'off';
+%%
+
+deplabel = {'0-20m';'20-100m';'100-200m';'200-400m'};
+
+for n = 1:8;%length(ax)
+
+    ax(n).FontSize = txtsize;
+    ax(n).FontWeight = 'bold';
+    
+     if n<=4
+         text(ax(n),0.02,0.95,[abcd(n) '.) ' deplabel{n}],'units','normalized','Fontsize',txtsize,'Fontweight','bold')
+    else
+         text(ax(n),0.02,0.95,[abcd(n) '.) ' deplabel{n-4}],'units','normalized','Fontsize',txtsize,'Fontweight','bold')
+    end
+   
+    caxis(ax(n),[0 12])
+    set(ax(n),'YLim', [3 14]);
+    set(ax(n),'XLim', [20 35]);
+end
+
+
+
+ylabel(ax(1:4),'Temperature')
+xlabel(ax(4),'Salinity')
+xlabel(ax(8),'Salinity')
+xticklabels(ax(1:3),[])
+xticklabels(ax(5:7),[])
+yticklabels(ax(5:8),[])
+
+
+title(ax(1),'Tidewater Glacier','Fontsize',txtsize','Fontweight','bold')
+title(ax(5),'No Tidewater Glacier','Fontsize',txtsize','Fontweight','bold')
+
+ax(1).Position = [0.25 0.74 0.25 0.2];
+ax(2).Position = [0.25 0.52 0.25 0.2];
+ax(3).Position = [0.25 0.3 0.25 0.2]; 
+ax(4).Position = [0.25 0.08 0.25 0.2];
+
+ax(5).Position = [0.53 0.74 0.25 0.2];
+ax(6).Position = [0.53 0.52 0.25 0.2];
+ax(7).Position = [0.53 0.3 0.25 0.2]; 
+ax(8).Position = [0.53 0.08 0.25 0.2];
+% if save_plot ==1; export_fig([figpath 'T_S_diagram_depths.png']); end
+if save_plot ==1; export_fig([figpath 'Fig07_TSdiagDepth_combo.pdf']); end
+
+%% Make T/S diagrams separated by season and glacier type
+% fjord.avgT.seas = cat(3,fjord.avgT.win,fjord.avgT.spr,fjord.avgT.sum,fjord.avgT.fal);
+% fjord.avgS.seas = cat(3,fjord.avgS.win,fjord.avgS.spr,fjord.avgS.sum,fjord.avgS.fal);
+
+figure
+% set(gcf,'Units','centimeters','Position', [0 0 16.8 12])
+set(gcf,'Units','centimeters','Position', [0 0 16.8 16])
+% set(gcf,'Position',[376 60 1476 925])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+ax(1) = subplot(221); % Winter
+hold on, box on
+T_S_diagram
+
+
+
+ax(2) = subplot(222); % Spring
+hold on, box on,
+T_S_diagram
+
+
+ax(3) = subplot(223); % summer
+hold on, box on
+T_S_diagram
+
+
+ax(4) = subplot(224); % fall
+hold on, box on
+T_S_diagram
+
+
+seas = {'win';'spr';'sum';'fal'};
+colors2plot = {'Blues';'Reds';'Greens';'Purples';'Greys'};
+regionnames = {'cook';'kenai';'prince';'yakutat';'southeast'};
+
+
+clear ldgnames
+clear pl
+ldgnames = {};
+nn = 1;
+mksize = 50;
+clp = brewermap(2,'Dark2');
+
+glacpar = NaN*ones(size(fjord.lat));
+for n = 1:length(fjord.lat)   
+    if ~isempty(fjord.glac_category{n})
+        if contains(fjord.glac_category{n},'tidewater')
+            glacpar(n) = 1;
+        end
+        if contains(fjord.glac_category{n},'no_glacier')
+            glacpar(n) = 2;
+        end
+
+    end
+end
+
+for n = 1:length(seas)
+
+    for m = 1:length(fjord.lat)
+        
+%         if sum(isnan(fjord.avgT(:,m,n))) < 200 & sum(isnan(fjord.avgS(:,m,n))) < 200 & contains(fjord.glac_category{m},'no_glacier')
+        if ~isempty(fjord.glac_category{m})  
+            if glacpar(m) ==1
+%                 indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.p,'Parent',ax(n));
+%                 indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz2,m,n),fjord.avgT(indz2,m,n),'o','Markersize',mksize,'Color',colors.p,'MarkerFaceColor',colors.p,'Parent',ax(n));
+%                 pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'o','Markersize',mksize,'Color',[clp(1,:)],'MarkerFaceColor',[clp(1,:)],'Parent',ax(n));
+               pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,[colors.bk1],'filled','MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0.5,'Parent',ax(n));
+               
+                ll = strrep(fjord.glac_category(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+            
+            if glacpar(m) ==2
+%                 indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.b,'Parent',ax(n));
+%                 indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz2,m,n),fjord.avgT(indz2,m,n),'o','Markersize',mksize,'Color',colors.b,'MarkerFaceColor',colors.b,'Parent',ax(n));
+%                pl(nn) = plot(fjord.avgS(:,m,n),fjord.avgT(:,m,n),'o','Markersize',mksize,'Color',[clp(2,:)],'MarkerFaceColor',[clp(2,:)],'Parent',ax(n));
+               pl(nn) = scatter(fjord.avgS(:,m,n),fjord.avgT(:,m,n),mksize,[colors.b],'filled','MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0.5,'Parent',ax(n));
+
+                ll = strrep(fjord.glac_category(m),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+        end
+%             if fjord.outer_sill_depth(m)>=200
+%                 indz1 = find(fjord.casts(m).z<fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz1,m,n),fjord.avgT(indz1,m,n),'o','Markersize',mksize,'Color',colors.r,'Parent',ax(n));
+%                 indz2 = find(fjord.casts(m).z>fjord.outer_sill_depth(m));
+%                 pl(nn) = plot(fjord.avgS(indz2,m,n),fjord.avgT(indz2,m,n),'o','Markersize',mksize,'Color',colors.r,'MarkerFaceColor',colors.r,'Parent',ax(n));
+%                 
+%                 ll = strrep(fjord.name(m),'_',' ');
+%                 ldgnames(nn) = ll;
+%                 nn = nn+1;
+%             end
+            
+    end
+%         aa = contains(fjord.name,'yakutat');
+%         scatter(fjord.avgS(:,aa,n),fjord.avgT(:,aa,n),mksize,[colors.bk1],'Parent',ax(n));
+%         aa = contains(fjord.name,'icy_bay_SE');
+%         scatter(fjord.avgS(:,aa,n),fjord.avgT(:,aa,n),mksize,[colors.bk1],'Parent',ax(n));
+
+    end
+% end
+
+
+
+[a,b] = unique(ldgnames);
+lg = legend([pl(b)],a);
+% lg.Position = [0.03 0.1 0.1 0.4];
+lg.Position = [0.25 0.69 0.1 0.05];
+lg.FontSize = 7;
+lg.Box = 'off';
+lg.NumColumns = 1;
+% ax(1).Position = [0.1 0.55 0.41 0.43];
+% ax(2).Position = [0.55 0.55 0.41 0.43];
+% ax(3).Position = [0.1 0.08 0.41 0.43]; 
+% ax(4).Position = [0.55 0.08 0.41 0.43];
+
+seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+abcd = 'abcd';
+for n = 1:4;%length(ax)
+
+    ax(n).FontSize = txtsize;
+%     ax(n).FontWeight = 'bold';
+    
+    text(ax(n),0.02,0.95,[abcd(n) '.) ' seaslabel{n}],'units','normalized','Fontsize',txtsize)
+    caxis(ax(n),[0 12])
+    set(ax(n),'YLim', [3 14]);
+    set(ax(n),'XLim', [20 35]);
+    set(ax(n),'XTick', [22 27 32]);
+end
+
+% text(ax(3),0.85,-0.12,'Salinity [psu]','units','normalized','Fontsize',txtsize)
+text(ax(3),0.85,-0.2,'Salinity (psu)','units','normalized','Fontsize',txtsize)
+text(ax(3),-0.18,0.8,'Temperature (\circC)','units','normalized','Fontsize',txtsize,'Rotation',90,'VerticalAlignment','middle')
+
+xticklabels(ax(1:2),[])
+yticklabels(ax(2:2:4),[])
+
+% ylabel(ax(1),'Temperature')
+% ylabel(ax(3),'Temperature')
+% xlabel(ax(3),'Salinity')
+% xlabel(ax(4),'Salinity')
+
+% set(lg(1),'Location','westoutside')
+% set(lg(2),'Location','eastoutside')
+% set(lg(3),'Location','westoutside')
+% set(lg(4),'Location','eastoutside')
+
+% ax(1).Position = [0.27 0.74 0.25 0.2];
+% ax(2).Position = [0.55 0.74 0.25 0.2];
+% ax(3).Position = [0.27 0.52 0.25 0.2];
+% ax(4).Position = [0.55 0.52 0.25 0.2];
+
+% ax(1).Position = [0.25 0.53 0.35 0.41];
+% ax(2).Position = [0.615 0.53 0.35 0.41];
+% ax(3).Position = [0.25 0.1 0.35 0.41]; 
+% ax(4).Position = [0.615 0.1 0.35 0.41];
+
+ax(1).Position = [0.43 0.72 0.25 0.2];
+ax(2).Position = [0.7 0.72 0.25 0.2];
+ax(3).Position = [0.43 0.5 0.25 0.2];
+ax(4).Position = [0.7 0.5 0.25 0.2];
+
+if save_plot ==1; export_fig([figpath 'TSdiagGlac.pdf']); end
+% if save_plot ==1; export_fig([figpath 'TS_diagram_glacierparam.png']); end
+
+
+%% Plot Temperature with Depth for fjords split up by sill depth and glacier/no glacier
+glac_cat = 'no_glacier';
+seas = {'win';'spr';'sum';'fal'};
+glaccat = {'no_glacier';'tidewater'};
+sill_catlab = {'0-10m';'10-100m';'>100m'};
+rglabels = {'Cook Inlet'; 'Kenai Peninsula'; 'Prince William Sound'; 'Yakutat Coast'; 'Southeast'};
+subpnum = 12;
+figure
+
+nn = 1;
+    clear pl
+    clear ldgnames
+
+for m = 1:3;%length(regionnames)
+
+set(gcf,'Units','centimeters','Position', [0 0 16.8 18])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+sprange = 4*m-3:4*m;
+
+ax(sprange(1)) = subplot(4,5,sprange(1)); % Winter
+hold on, grid on, box on
+
+ax(sprange(2)) = subplot(4,5,sprange(2)); % Spring
+hold on, grid on, box on
+
+ax(sprange(3)) = subplot(4,5,sprange(3)); % summer
+hold on, grid on, box on
+
+ax(sprange(4)) = subplot(4,5,sprange(4)); % fall
+hold on, grid on, box on
+
+for n = 1:length(seas)
+    seasdata = fjord.prof_num.(seas{n});
+    seasdata(find(seasdata == 0)) = NaN;
+    
+    
+        if m == 1
+            indreg = find(fjord.outer_sill_depth<10);%find(contains(fjord.geog_region,regionnames{m}));
+        elseif m ==2
+            indreg = find(fjord.outer_sill_depth>10 & fjord.outer_sill_depth<100);
+        elseif m ==3
+            indreg = find(fjord.outer_sill_depth>100);
+        end
+        
+        regTdata = [];
+        regTmin = [];
+        regTmax = [];
+        regTnum = [];
+%         cmapreg = distinguishable_colors(length(indreg));
+        
+        for mm = 1:length(indreg)
+            regTdata(:,mm) = fjord.avgT(:,indreg(mm),n);
+            regTmin(:,mm) = fjord.lowCI_T(:,indreg(mm),n);%lowCI_T
+            regTmax(:,mm) = fjord.higCI_T(:,indreg(mm),n);%higCI_T
+            regTnum(:,mm) = fjord.numT(:,indreg(mm),n);
+            regnames(mm) = fjord.name(indreg(mm));
+        end
+        
+        numwdat = find(sum(isnan(regTdata))<200);
+%         cmap = brewermap(length(numwdat),'Set1');
+%         cmap = cmocean('thermal',length(numwdat));
+%         cmap = flipud(brewermap(length(numwdat)*2,colors2plot{m}));
+%         cmap = flipud(cmap(1:length(numwdat),:));
+        
+        
+        for rd = 1:length(numwdat)
+            avgz = moving_average(fjord.casts(1).z,2,2);
+            avgT = moving_average(regTdata(:,numwdat(rd)),2,2);
+%            plot(regTdata(:,rd),fjord.casts(1).z,'linewidth',2,'Color',cmap(rd,:),'Parent',ax(n))
+            indcmap = find(contains(fjord.name,regnames(numwdat(rd))));
+            minT = moving_average(regTmin(:,numwdat(rd)),2,2);
+            maxT = moving_average(regTmax(:,numwdat(rd)),2,2);
+            
+            indminmax = find(~isnan(minT) & ~isnan(maxT));
+%             if contains(fjord.glac_category(indcmap),glac_cat)
+              if contains(fjord.glac_category(indcmap),'no_glacier')
+%                 patch([minT(indminmax) fliplr(maxT(indminmax))], [avgz(indminmax) fliplr(avgz(indminmax))], fjord.cmap(indcmap,:),'FaceAlpha',0.2,'EdgeColor',fjord.cmap(indcmap,:),'EdgeAlpha',0,'Parent',ax(sprange(n)))
+%                 pl(nn) = plot(avgT,avgz,'linewidth',2,'Color',[fjord.cmap(indcmap,:) 0.6],'Parent',ax(sprange(n)));
+                patch([minT(indminmax) fliplr(maxT(indminmax))], [avgz(indminmax) fliplr(avgz(indminmax))], colors.b,'FaceAlpha',0.2,'EdgeColor',colors.b,'EdgeAlpha',0,'Parent',ax(sprange(n)))
+                pl(nn) = plot(avgT,avgz,'linewidth',2,'Color',colors.b,'Parent',ax(sprange(n)));
+            
+            
+%                 ll = strrep(regnames(numwdat(rd)),'_',' ');
+%                 ldgnames(nn) = ll;
+                ll = strrep(fjord.glac_category(rd),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+              elseif contains(fjord.glac_category(indcmap),'tidewater')
+                patch([minT(indminmax) fliplr(maxT(indminmax))], [avgz(indminmax) fliplr(avgz(indminmax))], colors.bk1,'FaceAlpha',0.2,'EdgeColor',colors.bk1,'EdgeAlpha',0,'Parent',ax(sprange(n)))
+                pl(nn) = plot(avgT,avgz,'linewidth',2,'Color',colors.bk1,'Parent',ax(sprange(n)));
+            
+                ll = strrep(fjord.glac_category(rd),'_',' ');
+                ldgnames(nn) = ll;
+                nn = nn+1;
+            end
+        end
+    
+
+   
+end
+end
+[a,b] = unique(ldgnames);
+lg = legend([pl(b(1:2))],a(1:2));
+lg.Position = [0.17 0.52 0.1 0.05];
+% lg.Position = [0.68 0.375 0.1 0.25];
+lg.FontSize = 7;
+% lg.Box = 'off';
+
+seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+abcd = 'adhkbeilcfjm';
+Ylab = [{'0'};{'100'};{'200'};{'300'};{'400'}];
+Xlab =[{'0'};{'5'};{'10'}];
+
+for n = 1:12;%length(ax)
+
+    ax(n).FontSize = txtsize;
+%     ax(n).FontWeight = 'bold';
+    
+    text(ax(n),0.02,0.95,[abcd(n) '.) '],'units','normalized','Fontsize',txtsize)
+%     caxis(ax(n),[0 12])
+    set(ax(n),'YDir','reverse')
+%     lg(n).FontSize = 4;
+    set(ax(n),'XLim',[0 14])
+    set(ax(n),'YLim',[0 450])
+    set(ax(n),'XTick',[0 5 10])
+   
+    ax(n).XTickLabel = [];
+    ax(n).YTickLabel = [];
+end
+
+for n = 1:4
+    ax(n).YTickLabel = Ylab;
+end
+
+for n = 4:4:12
+    ax(n).XTickLabel = Xlab;
+end
+
+  a = 1;
+for n = 1:4:9
+    text(ax(n),0.5,1.06,[sill_catlab{a} ],'units','normalized','Fontsize',txtsize,'HorizontalAlignment','center')
+    a = a+1;
+end
+text(ax(8),0.5,-0.2,'Temperature (\circ C)','units','normalized','Fontsize',txtsize,'HorizontalAlignment','center')
+text(ax(2),-0.4,0,'Depth (m)','units','normalized','Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+
+text(ax(1),-0.3,0.5,'Winter','units','normalized','Color',colors.p,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+text(ax(2),-0.3,0.5,'Spring','units','normalized','Color',colors.c,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+text(ax(3),-0.3,0.5,'Summer','units','normalized','Color',colors.o,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+text(ax(4),-0.3,0.5,'Fall','units','normalized','Color',colors.r,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+
+%      
+%     ax(n).YTickLabel =
+% text(ax(1),0.5,1.06,[rglabels{m} ],'units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center')
+% ylabel(ax(1),'Depth')
+% ylabel(ax(2),'Depth')
+% ylabel(ax(3),'Depth')
+% ylabel(ax(4),'Depth')
+% 
+% xlabel(ax(4),'Temperature')
+
+% set(lg(1),'Location','southeast')
+% set(lg(3),'Location','southeast')
+% set(lg(2),'Location','southeast')
+% set(lg(4),'Location','southeast')
+
+% ax(1).XTickLabel = [];
+% ax(2).XTickLabel = [];
+% ax(3).XTickLabel = [];
+
+ax(1).Position = [0.09 0.73 0.17 0.2];
+ax(2).Position = [0.09 0.51 0.17 0.2];
+ax(3).Position = [0.09 0.29 0.17 0.2]; 
+ax(4).Position = [0.09 0.07 0.17 0.2];
+
+ax(5).Position = [0.27 0.73 0.17 0.2];
+ax(6).Position = [0.27 0.51 0.17 0.2];
+ax(7).Position = [0.27 0.29 0.17 0.2]; 
+ax(8).Position = [0.27 0.07 0.17 0.2];
+
+ax(9).Position = [0.45 0.73 0.17 0.2];
+ax(10).Position = [0.45 0.51 0.17 0.2];
+ax(11).Position = [0.45 0.29 0.17 0.2]; 
+ax(12).Position = [0.45 0.07 0.17 0.2];
+
+% ax(13).Position = [0.63 0.73 0.17 0.2];
+% ax(14).Position = [0.63 0.51 0.17 0.2];
+% ax(15).Position = [0.63 0.29 0.17 0.2]; 
+% ax(16).Position = [0.63 0.07 0.17 0.2];
+% 
+% ax(17).Position = [0.81 0.73 0.17 0.2];
+% ax(18).Position = [0.81 0.51 0.17 0.2];
+% ax(19).Position = [0.81 0.29 0.17 0.2]; 
+% ax(20).Position = [0.81 0.07 0.17 0.2];
+
+if save_plot ==1; export_fig([figpath 'Fig11_TDepth_no_glacier.pdf']); 
+% print(gcf,'-dpdf')
+end
+% if save_plot ==1; export_fig([figpath 'avgTempdepth_' regionnames{m} '.png']); end
+
+%% Plot Temperature and Salinity with Depth for fjords split up by  glacier/no glacier
+glac_cat = 'no_glacier';
+seas = {'win';'spr';'sum';'fal'};
+glaccat = {'no_glacier';'tidewater'};
+sill_catlab = {'0-20m';'20-200m';'>200m'};
+rglabels = {'Cook Inlet'; 'Kenai Peninsula'; 'Prince William Sound'; 'Yakutat Coast'; 'Southeast'};
+subpnum = 12;
+figure
+
+nn = 1;
+    clear pl
+    clear ldgnames
+
+% for m = 1:4;%length(regionnames)
+
+set(gcf,'Units','centimeters','Position', [0 0 16.8 18])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+ax(1) = subplot(431);
+hold on, grid on, box on
+
+ax(2) = subplot(432);
+hold on, grid on, box on
+
+ax(3) = subplot(433);
+hold on, grid on, box on
+
+ax(4) = subplot(434);
+hold on, grid on, box on
+
+ax(5) = subplot(435);
+hold on, grid on, box on
+
+ax(6) = subplot(436);
+hold on, grid on, box on
+
+ax(7) = subplot(437);
+hold on, grid on, box on
+
+ax(8) = subplot(438);
+hold on, grid on, box on
+
+ax(9) = subplot(439);
+hold on, grid on, box on
+
+ax(10) = subplot(4,3,10);
+hold on, grid on, box on
+
+ax(11) = subplot(4,3,11);
+hold on, grid on, box on
+
+ax(12) = subplot(4,3,12);
+hold on, grid on, box on
+
+navg = 2;
+for n = 1:length(seas)
+
+    for m = 1:length(fjord.lat)
+        
+            avgz = moving_average(fjord.casts(1).z,navg,navg);
+            avgT = moving_average(fjord.avgT(:,m,n),navg,navg);
+            indcmap = m;%find(contains(fjord.name,regnames(numwdat(rd))));
+            minT = moving_average(fjord.lowCI_T(:,m,n),navg,navg);
+            maxT = moving_average(fjord.higCI_T(:,m,n),navg,navg);
+            
+            avgz = moving_average(fjord.casts(1).z,navg,navg);
+            avgS = moving_average(fjord.avgS(:,m,n),navg,navg);
+            indcmap = m;%find(contains(fjord.name,regnames(numwdat(rd))));
+            minS = moving_average(fjord.lowCI_S(:,m,n),navg,navg);
+            maxS = moving_average(fjord.higCI_S(:,m,n),navg,navg);
+            
+            avgN2 = moving_average(fjord.avgT(:,m,n),navg,navg);
+            indcmap = m;%find(contains(fjord.name,regnames(numwdat(rd))));
+            minN2 = moving_average(fjord.minN2(:,m,n),navg,navg);
+            maxN2 = moving_average(fjord.maxN2(:,m,n),navg,navg);
+            
+            
+            indminmaxT = find(~isnan(minT) & ~isnan(maxT));
+            indminmaxS = find(~isnan(minS) & ~isnan(maxS));
+            indminmaxN2 = find(~isnan(minN2) & ~isnan(maxN2));
+            if sum(isnan(fjord.avgT(:,m,n))<200)
+            if contains(fjord.glac_category(indcmap),'no_glacier')
+%                 pl(nn) = plot(avgT,avgz,'--','linewidth',2,'Color',fjord.cmap(indcmap,:),'Parent',ax(sprange(n)));
+%             else
+%                 patch([minT(indminmaxT) fliplr(maxT(indminmaxT))], [avgz(indminmaxT) fliplr(avgz(indminmaxT))], fjord.cmap(indcmap,:),'FaceAlpha',0.2,'EdgeColor',fjord.cmap(indcmap,:),'EdgeAlpha',0,'Parent',ax(n))
+%                 pl(nn) = plot(avgT,avgz,'linewidth',2,'Color',[fjord.cmap(indcmap,:) 0.6],'Parent',ax(n));
+%             
+%                 patch([minS(indminmaxS) fliplr(maxS(indminmaxS))], [avgz(indminmaxS) fliplr(avgz(indminmaxS))], fjord.cmap(indcmap,:),'FaceAlpha',0.2,'EdgeColor',fjord.cmap(indcmap,:),'EdgeAlpha',0,'Parent',ax(n+4))
+%                 pl(nn) = plot(avgS,avgz,'linewidth',2,'Color',[fjord.cmap(indcmap,:) 0.6],'Parent',ax(n+4));
+                 patch([minT(indminmaxT) fliplr(maxT(indminmaxT))], [avgz(indminmaxT) fliplr(avgz(indminmaxT))], colors.b,'FaceAlpha',0.2,'EdgeColor',colors.b,'EdgeAlpha',0,'Parent',ax(n))
+                pl(nn) = plot(avgT,avgz,'linewidth',1,'Color',[colors.b],'Parent',ax(n));
+            
+                patch([minS(indminmaxS) fliplr(maxS(indminmaxS))], [avgz(indminmaxS) fliplr(avgz(indminmaxS))], colors.b,'FaceAlpha',0.2,'EdgeColor',colors.b,'EdgeAlpha',0,'Parent',ax(n+4))
+                pl(nn) = plot(avgS,avgz,'linewidth',1,'Color',[colors.b],'Parent',ax(n+4));
+
+                  patch([minN2(indminmaxN2) fliplr(maxN2(indminmaxN2))], [avgz(indminmaxN2) fliplr(avgz(indminmaxN2))], colors.b,'FaceAlpha',0.2,'EdgeColor',colors.b,'EdgeAlpha',0,'Parent',ax(n+8))
+                pl(nn) = plot(avgN2,avgz,'linewidth',1,'Color',[colors.b],'Parent',ax(n));
+                
+                ll = strrep(fjord.glac_category(m),'_',' ');
+                ldgnames(nn) = ll;
+ 
+                nn = nn+1;
+            end
+            
+            if contains(fjord.glac_category(indcmap),'tidewater')
+
+                patch([minT(indminmaxT) fliplr(maxT(indminmaxT))], [avgz(indminmaxT) fliplr(avgz(indminmaxT))], colors.bk1,'FaceAlpha',0.2,'EdgeColor',colors.bk1,'EdgeAlpha',0,'Parent',ax(n))
+                pl(nn) = plot(avgT,avgz,'linewidth',1,'Color',[colors.bk1],'Parent',ax(n));
+            
+                patch([minS(indminmaxS) fliplr(maxS(indminmaxS))], [avgz(indminmaxS) fliplr(avgz(indminmaxS))], colors.bk1,'FaceAlpha',0.2,'EdgeColor',colors.bk1,'EdgeAlpha',0,'Parent',ax(n+4))
+                pl(nn) = plot(avgS,avgz,'linewidth',1,'Color',[colors.bk1],'Parent',ax(n+4));
+
+                patch([minN2(indminmaxN2) fliplr(maxN2(indminmaxN2))], [avgz(indminmaxN2) fliplr(avgz(indminmaxN2))], colors.bk1,'FaceAlpha',0.2,'EdgeColor',colors.bk1,'EdgeAlpha',0,'Parent',ax(n+8))
+                pl(nn) = plot(avgN2,avgz,'linewidth',1,'Color',[colors.bk1],'Parent',ax(n));
+                
+                ll = strrep(fjord.glac_category(m),'_',' ');
+                ldgnames(nn) = ll;
+%                 ldgnames(nn) = {cell2mat([(ll) ': ' num2str(regTnum(numwdat(rd)))])}; %ll;
+ 
+                nn = nn+1;
+            end
+            end
+       
+% %         end
+    end
+    
+     aa = contains(fjord.name,'leconte');
+     avgz = moving_average(fjord.casts(1).z,2,2);
+     avgT = moving_average(fjord.avgT(:,aa,n),2,2);
+     avgS = moving_average(fjord.avgS(:,aa,n),2,2);
+     avgN2 = moving_average(fjord.avgN2(:,aa,n),2,2);
+     plot(avgN2,avgz,'Color',[colors.c],'Parent',ax(n+8),'linewidth',1.5);
+     plot(avgT,avgz,'Color',[colors.c],'Parent',ax(n),'linewidth',1.5);
+     pl_l = plot(avgS,avgz,'Color',[colors.c],'Parent',ax(n+4),'linewidth',1.5);
+     
+     aa = contains(fjord.name,'aialik');
+     avgz = moving_average(fjord.casts(1).z,2,2);
+     avgT = moving_average(fjord.avgT(:,aa,n),2,2);
+     avgS = moving_average(fjord.avgS(:,aa,n),2,2);
+     avgN2 = moving_average(fjord.avgN2(:,aa,n),2,2);
+      plot(avgN2,avgz,'Color',[colors.c],'Parent',ax(n+8),'linewidth',1.5);
+     plot(avgT,avgz,'Color',[colors.r],'Parent',ax(n),'linewidth',1.5);
+     pl_a = plot(avgS,avgz,'Color',[colors.r],'Parent',ax(n+4),'linewidth',1.5);
+     
+     aa = contains(fjord.name,'columbia');
+     avgz = moving_average(fjord.casts(1).z,2,2);
+     avgT = moving_average(fjord.avgT(:,aa,n),2,2);
+     avgS = moving_average(fjord.avgS(:,aa,n),2,2);
+     avgN2 = moving_average(fjord.avgN2(:,aa,n),2,2);
+      plot(avgN2,avgz,'Color',[colors.c],'Parent',ax(n+8),'linewidth',1.5);
+     plot(avgT,avgz,'Color',[colors.p],'Parent',ax(n),'linewidth',1.5);
+     pl_c = plot(avgS,avgz,'Color',[colors.p],'Parent',ax(n+4),'linewidth',1.5);
+     
+%      aa = contains(fjord.name,'kukak');
+%      avgz = moving_average(fjord.casts(1).z,2,2);
+%      avgT = moving_average(fjord.avgT(:,aa,n),2,2);
+%      avgS = moving_average(fjord.avgS(:,aa,n),2,2);
+%      plot(avgT,avgz,'--','Color',[colors.r],'Parent',ax(n),'linewidth',1.5);
+%      plot(avgS,avgz,'--','Color',[colors.r],'Parent',ax(n+4),'linewidth',1.5);
+%      
+%      aa = contains(fjord.name,'valdez');
+%      avgz = moving_average(fjord.casts(1).z,2,2);
+%      avgT = moving_average(fjord.avgT(:,aa,n),2,2);
+%      avgS = moving_average(fjord.avgS(:,aa,n),2,2);
+%      plot(avgT,avgz,'-.','Color',[colors.r],'Parent',ax(n),'linewidth',1.5);
+%      plot(avgS,avgz,'-.','Color',[colors.r],'Parent',ax(n+4),'linewidth',1.5);
+%      
+%      aa = contains(fjord.name,'hogan');
+%      avgz = moving_average(fjord.casts(1).z,2,2);
+%      avgT = moving_average(fjord.avgT(:,aa,n),2,2);
+%      avgS = moving_average(fjord.avgS(:,aa,n),2,2);
+%      plot(avgT,avgz,'Color',[colors.r],'Parent',ax(n),'linewidth',1.5);
+%      plot(avgS,avgz,'Color',[colors.r],'Parent',ax(n+4),'linewidth',1.5);
+%      
+  
+%      aa = contains(fjord.name,'icy_bay_SE');
+%      avgz = moving_average(fjord.casts(1).z,2,2);
+%      avgT = moving_average(fjord.avgT(:,aa,n),2,2);
+%      avgS = moving_average(fjord.avgS(:,aa,n),2,2);
+%      plot(avgT,avgz,'Color',[colors.dg],'Parent',ax(n),'linewidth',1.5);
+%      plot(avgS,avgz,'Color',[colors.dg],'Parent',ax(n+4),'linewidth',1.5);
+ 
+end   
+
+        
+   
+
+[a,b] = unique(ldgnames);
+lg_namescomplete = [a(1); a(2); {'Leconte'};{'Aialik'};{'Columbia'}];
+
+lg = legend(ax(6),[pl(b) pl_l pl_a pl_c],lg_namescomplete);
+lg.Position = [0.22 0.55 0.1 0.05];
+% lg.Position = [0.51 0.375 0.1 0.25];
+lg.FontSize = 7;
+% lg.Box = 'off';
+
+seaslabel = [{'Winter'};{'Spring'};{'Summer'};{'Fall'}];
+% abcd = 'adhkbeilcfjm';
+abcd = 'abcdefghijklm';
+Ylab = [{'0'};{'100'};{'200'};{'300'};{'400'}];
+Xlab =[{'0'};{'5'};{'10'}];
+
+for n = 1:12;%length(ax)
+
+    ax(n).FontSize = txtsize;
+%     ax(n).FontWeight = 'bold';
+    
+    text(ax(n),0.02,0.95,[abcd(n) '.) '],'units','normalized','Fontsize',txtsize)
+%     caxis(ax(n),[0 12])
+    set(ax(n),'YDir','reverse')
+%     lg(n).FontSize = 4;
+    
+    set(ax(n),'YLim',[0 450])
+    
+   
+    ax(n).XTickLabel = [];
+    ax(n).YTickLabel = [];
+end
+set(ax(1:4),'XLim',[0 14])
+set(ax(1:4),'XTick',[0 5 10])
+ax(4).XLabel.String = 'Temperature (\circC)';
+ax(4).XTickLabel = Xlab;
+
+for n = 1:4
+    ax(n).YTickLabel = Ylab;
+end
+% ax(1).YTickLabel = Ylab;
+% ax(5).YTickLabel = Ylab;
+
+ax(8).XLabel.String = 'Salinity (psu)';
+set(ax(5:8),'XLim',[25 34]);
+set(ax(5:8),'XTick',[27 30 33])
+ax(8).XTickLabel = [{'27'};{'30'};{'33'}];
+
+
+  a = 1;
+% for n = 1:4:9
+%     text(ax(n),0.5,1.06,[sill_catlab{a} ],'units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center')
+%     a = a+1;
+% end
+% text(ax(8),0.5,-0.2,'Temperature (\circ C)','units','normalized','Fontsize',txtsize,'Fontweight','bold','HorizontalAlignment','center')
+text(ax(2),-0.4,0,'Depth (m)','units','normalized','Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+
+text(ax(1),-0.3,0.5,'Winter','units','normalized','Color',colors.p,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+text(ax(2),-0.3,0.5,'Spring','units','normalized','Color',colors.c,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+text(ax(3),-0.3,0.5,'Summer','units','normalized','Color',colors.o,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+text(ax(4),-0.3,0.5,'Fall','units','normalized','Color',colors.r,'Fontsize',txtsize,'HorizontalAlignment','center','Rotation',90)
+
+ax(1).Position = [0.09 0.73 0.17 0.2];
+ax(2).Position = [0.09 0.51 0.17 0.2];
+ax(3).Position = [0.09 0.29 0.17 0.2]; 
+ax(4).Position = [0.09 0.07 0.17 0.2];
+
+ax(5).Position = [0.27 0.73 0.17 0.2];
+ax(6).Position = [0.27 0.51 0.17 0.2];
+ax(7).Position = [0.27 0.29 0.17 0.2]; 
+ax(8).Position = [0.27 0.07 0.17 0.2];
+
+ax(9).Position = [0.45 0.73 0.17 0.2];
+ax(10).Position = [0.45 0.51 0.17 0.2];
+ax(11).Position = [0.45 0.29 0.17 0.2]; 
+ax(12).Position = [0.45 0.07 0.17 0.2];
+
+%export_fig('Fig_08_redo.png')
+
+% if save_plot ==1; export_fig([figpath 'Fig11_TDepth_no_glacier.pdf']); 
+% print(gcf,'-dpdf')
+% end
+% if save_plot ==1; export_fig([figpath 'avgTempdepth_' regionnames{m} '.png']); end
+
+%% Plot stratification
+
+nn = 1;
+    clear pl
+    clear ldgnames
+
+% for m = 1:4;%length(regionnames)
+
+set(gcf,'Units','centimeters','Position', [0 0 16.8 18])
+% set(gcf,'Position',[376 60 1476 925])
+set(gcf,'Color','w')
+
+ax(1) = subplot(411);
+hold on, grid on, box on
+
+ax(2) = subplot(412);
+hold on, grid on, box on
+
+ax(3) = subplot(413);
+hold on, grid on, box on
+
+ax(4) = subplot(414);
+hold on, grid on, box on
+
+
+navg = 2;
+for n = 1:length(seas)
+
+    for m = 1:length(fjord.lat)
+        
+            avgz = moving_average(fjord.casts(1).z,navg,navg);
+            avgN2 = moving_average(fjord.avgT(:,m,n),navg,navg);
+            indcmap = m;%find(contains(fjord.name,regnames(numwdat(rd))));
+            minN2 = moving_average(fjord.minN2(:,m,n),navg,navg);
+            maxN2 = moving_average(fjord.maxN2(:,m,n),navg,navg);
+            
+ 
+            indminmaxN2 = find(~isnan(minN2) & ~isnan(maxN2));
+         
+            if sum(isnan(fjord.avgN2(:,m,n))<200)
+            if contains(fjord.glac_category(indcmap),'no_glacier')
+                 patch([minN2(indminmaxN2) fliplr(maxN2(indminmaxN2))], [avgz(indminmaxN2) fliplr(avgz(indminmaxN2))], colors.b,'FaceAlpha',0.2,'EdgeColor',colors.b,'EdgeAlpha',0,'Parent',ax(n))
+                pl(nn) = plot(avgN2,avgz,'linewidth',1,'Color',[colors.b],'Parent',ax(n));
+            
+                ll = strrep(fjord.glac_category(m),'_',' ');
+                ldgnames(nn) = ll;
+%                 ldgnames(nn) = {cell2mat([(ll) ': ' num2str(regTnum(numwdat(rd)))])}; %ll;
+ 
+                nn = nn+1;
+            end
+            
+            if contains(fjord.glac_category(indcmap),'tidewater')
+
+                patch([minN2(indminmaxN2) fliplr(maxN2(indminmaxN2))], [avgz(indminmaxN2) fliplr(avgz(indminmaxN2))], colors.bk1,'FaceAlpha',0.2,'EdgeColor',colors.bk1,'EdgeAlpha',0,'Parent',ax(n))
+                pl(nn) = plot(avgN2,avgz,'linewidth',1,'Color',[colors.bk1],'Parent',ax(n));
+
+                ll = strrep(fjord.glac_category(m),'_',' ');
+                ldgnames(nn) = ll;
+ 
+                nn = nn+1;
+            end
+            end
+       
+     end
+end
